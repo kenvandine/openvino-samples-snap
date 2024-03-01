@@ -1,0 +1,116 @@
+name: openvino-samples
+base: core22
+version: "2024-0"
+summary: Intel's OpenVINO Toolkit samples
+description: |
+  Sample applications in OpenVINO.
+
+grade: devel
+confinement: strict
+adopt-info: openvino-samples
+
+plugs:
+  openvino-toolkit-2204:
+    interface: content
+    target: $SNAP/openvino
+    default-provider: openvino-toolkit-2204
+
+apps:
+  benchmark-app:
+    command: bin/benchmark_app
+    environment:
+      INTEL_OPENVINO_DIR: $SNAP/openvino
+      GI_TYPELIB_PATH: $SNAP/openvino/data_processing/gstreamer/lib/girepository-1.0
+      GST_PLUGIN_PATH: $SNAP/openvino/data_processing/dl_streamer/lib:$SNAP/openvino/data_processing/gstreamer/lib/gstreamer-1.0
+      GST_PLUGIN_SCANNER: $SNAP/openvino/data_processing/gstreamer/bin/gstreamer-1.0/gst-plugin-scanner
+      GST_SAMPLES_DIR: $SNAP/openvino/data_processing/dl_streamer/samples
+      GST_VAAPI_ALL_DRIVERS: 1
+      HDDL_INSTALL_DIR: $SNAP/openvino/deployment_tools/inference_engine/external/hddl
+      INTEL_CVSDK_DIR: $SNAP/openvino
+      InferenceEngine_DIR: $SNAP/openvino/deployment_tools/inference_engine/share
+      LC_NUMERIC: C
+      LD_LIBRARY_PATH: $INTEL_OPENVINO_DIR/openvino/runtime/lib/intel64:$INTEL_OPENVINO_DIR/usr/lib:$INTEL_OPENVINO_DIR/usr/lib/x86_64-linux-gnu:$SNAP/openvino/data_processing/dl_streamer/lib:$SNAP/openvino/data_processing/gstreamer/lib:$SNAP/openvino/opencv/lib:$SNAP/openvino/deployment_tools/ngraph/lib:$SNAP/openvino/deployment_tools/inference_engine/external/hddl/lib:$SNAP/openvino/deployment_tools/inference_engine/external/gna/lib:$SNAP/openvino/deployment_tools/inference_engine/external/mkltiny_lnx/lib:$SNAP/openvino/deployment_tools/inference_engine/external/tbb/lib:$SNAP/openvino/deployment_tools/inference_engine/lib/intel64:$SNAP/openvino/deployment_tools/inference_engine/lib/aarch64:$SNAP/openvino/lib:$INTEL_OPENVINO_DIR/../usr/lib/$CRAFT_ARCH_TRIPLET:$SNAP/usr/lib/x86_64-linux-gnu/blas:$SNAP/usr/lib/x86_64-linux-gnu/lapack:$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/usr/lib/libpsm1
+      LIBRARY_PATH: $SNAP/openvino/data_processing/dl_streamer/lib:$SNAP/openvino/data_processing/gstreamer/lib:$INTEL_OPENVINO_DIR/../usr/lib/$CRAFT_ARCH_TRIPLET
+      MODELS_PATH: /home/ubuntu/intel/dl_streamer/models
+      OpenCV_DIR: $SNAP/openvino/opencv/cmake
+      PATH: $SNAP/openvino/deployment_tools/model_optimizer:$SNAP/openvino/data_processing/gstreamer/bin:$SNAP/openvino/data_processing/gstreamer/bin/gstreamer-1.0:$PATH
+      PKG_CONFIG_PATH: $SNAP/openvino/data_processing/dl_streamer/lib/pkgconfig:$SNAP/openvino/data_processing/gstreamer/lib/pkgconfig
+      PYTHONPATH: $SNAP/openvino/python/python3.10:$SNAP/openvino/python/python3:$SNAP/openvino/deployment_tools/open_model_zoo/tools/accuracy_checker:$SNAP/openvino/deployment_tools/model_optimizer:$SNAP/openvino/data_processing/dl_streamer/python:$SNAP/openvino/data_processing/gstreamer/lib/python3.10/site-packages
+      ngraph_DIR: $SNAP/openvino/cmake
+    plugs:
+      - home
+      - hardware-observe
+      - mount-observe
+      - network-bind
+      - network-control
+      - network-observe
+      - raw-usb
+  #benchmark-app-py:
+  #  command: python3.10 $SNAP/openvino/deployment_tools/tools/benchmark_tool/benchmark_app.py
+  #  environment:
+  #    INTEL_OPENVINO_DIR: $SNAP/openvino
+  #    GI_TYPELIB_PATH: $SNAP/openvino/data_processing/gstreamer/lib/girepository-1.0
+  #    GST_PLUGIN_PATH: $SNAP/openvino/data_processing/dl_streamer/lib:$SNAP/openvino/data_processing/gstreamer/lib/gstreamer-1.0
+  #    GST_PLUGIN_SCANNER: $SNAP/openvino/data_processing/gstreamer/bin/gstreamer-1.0/gst-plugin-scanner
+  #    GST_SAMPLES_DIR: $SNAP/openvino/data_processing/dl_streamer/samples
+  #    GST_VAAPI_ALL_DRIVERS: 1
+  #    HDDL_INSTALL_DIR: $SNAP/openvino/deployment_tools/inference_engine/external/hddl
+  #    INTEL_CVSDK_DIR: $SNAP/openvino
+  #    InferenceEngine_DIR: $SNAP/openvino/deployment_tools/inference_engine/share
+  #    LC_NUMERIC: C
+  #    LD_LIBRARY_PATH: $SNAP/openvino/data_processing/dl_streamer/lib:$SNAP/openvino/data_processing/gstreamer/lib:$SNAP/openvino/opencv/lib:$SNAP/openvino/deployment_tools/ngraph/lib:$SNAP/openvino/deployment_tools/inference_engine/external/hddl/lib:$SNAP/openvino/deployment_tools/inference_engine/external/gna/lib:$SNAP/openvino/deployment_tools/inference_engine/external/mkltiny_lnx/lib:$SNAP/openvino/deployment_tools/inference_engine/external/tbb/lib:$SNAP/openvino/deployment_tools/inference_engine/lib/intel64:$SNAP/openvino/deployment_tools/inference_engine/lib/aarch64:$SNAP/openvino/lib:$INTEL_OPENVINO_DIR/../usr/lib/$CRAFT_ARCH_TRIPLET:$SNAP/usr/lib/x86_64-linux-gnu/blas:$SNAP/usr/lib/x86_64-linux-gnu/lapack:$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/usr/lib/libpsm1
+  #    LIBRARY_PATH: $SNAP/openvino/data_processing/dl_streamer/lib:$SNAP/openvino/data_processing/gstreamer/lib:$INTEL_OPENVINO_DIR/../usr/lib/$CRAFT_ARCH_TRIPLET
+  #    MODELS_PATH: /home/ubuntu/intel/dl_streamer/models
+  #    OpenCV_DIR: $SNAP/openvino/opencv/cmake
+  #    PATH: $SNAP/openvino/deployment_tools/model_optimizer:$SNAP/openvino/data_processing/gstreamer/bin:$SNAP/openvino/data_processing/gstreamer/bin/gstreamer-1.0:$PATH
+  #    PKG_CONFIG_PATH: $SNAP/openvino/data_processing/dl_streamer/lib/pkgconfig:$SNAP/openvino/data_processing/gstreamer/lib/pkgconfig
+  #    PYTHONPATH: $SNAP/openvino/python/python3.10:$SNAP/openvino/python/python3:$SNAP/openvino/deployment_tools/open_model_zoo/tools/accuracy_checker:$SNAP/openvino/deployment_tools/model_optimizer:$SNAP/openvino/data_processing/dl_streamer/python:$SNAP/openvino/data_processing/gstreamer/lib/python3.10/site-packages
+  #    ngraph_DIR: $SNAP/openvino/cmake
+  #  plugs:
+  #    - home
+  #    - hardware-observe
+  #    - mount-observe
+  #    - network-bind
+  #    - network-control
+  #    - network-observe
+  #    - raw-usb
+
+parts:
+  openvino-samples:
+    source: https://github.com/openvinotoolkit/openvino.git
+    source-branch: "releases/2024/0"
+    source-subdir: samples
+    plugin: cmake
+    build-environment:
+    - INTEL_OPENVINO_DIR: /snap/openvino-toolkit-2204/current/openvino
+    - GI_TYPELIB_PATH: $INTEL_OPENVINO_DIR/data_processing/gstreamer/lib/girepository-1.0
+    - GST_PLUGIN_PATH: $INTEL_OPENVINO_DIR/data_processing/dl_streamer/lib:$INTEL_OPENVINO_DIR/data_processing/gstreamer/lib/gstreamer-1.0
+    - GST_PLUGIN_SCANNER: $INTEL_OPENVINO_DIR/data_processing/gstreamer/bin/gstreamer-1.0/gst-plugin-scanner
+    - GST_SAMPLES_DIR: $INTEL_OPENVINO_DIR/data_processing/dl_streamer/samples
+    - GST_VAAPI_ALL_DRIVERS: 1
+    - HDDL_INSTALL_DIR: $INTEL_OPENVINO_DIR/deployment_tools/inference_engine/external/hddl
+    - INTEL_CVSDK_DIR: $INTEL_OPENVINO_DIR
+    - InferenceEngine_DIR: $INTEL_OPENVINO_DIR/deployment_tools/inference_engine/share
+    - LC_NUMERIC: C
+    - LD_LIBRARY_PATH: $INTEL_OPENVINO_DIR/data_processing/dl_streamer/lib:$INTEL_OPENVINO_DIR/data_processing/gstreamer/lib:$INTEL_OPENVINO_DIR/opencv/lib:$INTEL_OPENVINO_DIR/deployment_tools/ngraph/lib:$INTEL_OPENVINO_DIR/deployment_tools/inference_engine/external/hddl/lib:$INTEL_OPENVINO_DIR/deployment_tools/inference_engine/external/gna/lib:$INTEL_OPENVINO_DIR/deployment_tools/inference_engine/external/mkltiny_lnx/lib:$INTEL_OPENVINO_DIR/deployment_tools/inference_engine/external/tbb/lib:$INTEL_OPENVINO_DIR/deployment_tools/inference_engine/lib/intel64:$INTEL_OPENVINO_DIR/deployment_tools/inference_engine/lib/aarch64:$INTEL_OPENVINO_DIR/lib:$INTEL_OPENVINO_DIR/../usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR
+    - LIBRARY_PATH: $INTEL_OPENVINO_DIR/data_processing/dl_streamer/lib:$INTEL_OPENVINO_DIR/data_processing/gstreamer/lib:$INTEL_OPENVINO_DIR/../usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR
+    - MODELS_PATH: $INTEL_OPENVINO_DIR/models
+    - OpenCV_DIR: $INTEL_OPENVINO_DIR/opencv
+    - PATH: $INTEL_OPENVINO_DIR/deployment_tools/model_optimizer:$INTEL_OPENVINO_DIR/data_processing/gstreamer/bin:$INTEL_OPENVINO_DIR/data_processing/gstreamer/bin/gstreamer-1.0:$PATH
+    - PKG_CONFIG_PATH: $INTEL_OPENVINO_DIR/data_processing/dl_streamer/lib/pkgconfig:$INTEL_OPENVINO_DIR/data_processing/gstreamer/lib/pkgconfig
+    - PYTHONPATH: $INTEL_OPENVINO_DIR/python/python3.10:$INTEL_OPENVINO_DIR/python/python3:$INTEL_OPENVINO_DIR/deployment_tools/open_model_zoo/tools/accuracy_checker:$INTEL_OPENVINO_DIR/deployment_tools/model_optimizer:$INTEL_OPENVINO_DIR/data_processing/dl_streamer/python:$INTEL_OPENVINO_DIR/data_processing/gstreamer/lib/python3.10/site-packages
+    - ngraph_DIR: $INTEL_OPENVINO_DIR/cmake
+    #override-pull: |
+    #  craftctl default
+    #  craftctl set version="$(git describe --tags --always --abrev=4)"
+    override-build: |
+      cmake -DCMAKE_INSTALL_PREFIX=$SNAPCRAFT_PART_INSTALL -DCMAKE_CXX_FLAGS=-L$INTEL_OPENVINO_DIR/../usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR -DCMAKE_BUILD_TYPE=Release  -DENABLE_PYTHON=ON -DPYTHON_EXECUTABLE=/usr/bin/python3.10 -DPYTHON_INCLUDE_DIR=/usr/include/python3.10 -DCYTHON_EXECUTABLE=$(which cython) $SNAPCRAFT_PART_SRC
+      cmake --build ./samples/cpp/benchmark_app -- -j"${SNAPCRAFT_PARALLEL_BUILD_COUNT}"
+      cmake --build ./samples/cpp/benchmark_app --target install -- DESTDIR=/
+      mkdir -p $SNAPCRAFT_PART_INSTALL/bin $SNAPCRAFT_PART_INSTALL/lib
+      cp -rp $SNAPCRAFT_PART_SRC/bin/*/Release/* $SNAPCRAFT_PART_INSTALL/bin/
+      cp -rp $SNAPCRAFT_PART_SRC/temp/tbb/lib/* $SNAPCRAFT_PART_INSTALL/lib/
+      if [ -d $SNAPCRAFT_PART_SRC/bin/*/Release/lib ]; then mkdir -p $SNAPCRAFT_PART_INSTALL/lib; cp -v $SNAPCRAFT_PART_SRC/bin/*/Release/lib/* $SNAPCRAFT_PART_INSTALL/lib/; fi
+    build-snaps: [ openvino-toolkit-2204/latest/edge ]
+    prime:
+      - bin
