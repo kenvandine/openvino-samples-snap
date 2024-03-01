@@ -9,6 +9,9 @@ grade: devel
 confinement: strict
 adopt-info: openvino-samples
 
+architectures:
+  - build-on: amd64
+
 plugs:
   openvino-toolkit-2204:
     interface: content
